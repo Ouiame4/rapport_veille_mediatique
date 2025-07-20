@@ -2,20 +2,17 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import os
 
 # -------- Fonction de vérification du login --------
 def check_login(username, password):
     return username == "admin" and password == "admin"
 
-# -------- Gestion de session --------
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
-if 'data_uploaded' not in st.session_state:
-    st.session_state.data_uploaded = False
+# -------- Initialisation de l'état --------
+if 'page' not in st.session_state:
+    st.session_state.page = 'login'
 
 # -------- Page 1 : Login --------
-if not st.session_state.logged_in:
+if st.session_state.page == 'login':
     st.title("🔐 Interface de connexion")
 
     username = st.text_input("Nom d'utilisateur")
@@ -23,13 +20,13 @@ if not st.session_state.logged_in:
 
     if st.button("Se connecter"):
         if check_login(username, password):
-            st.session_state.logged_in = True
+            st.session_state.page = 'upload'
             st.success("Connexion réussie !")
         else:
             st.error("Identifiants incorrects. Veuillez réessayer.")
 
 # -------- Page 2 : Upload CSV --------
-elif not st.session_state.data_uploaded:
+elif st.session_state.page == 'upload':
     st.title("📁 Sélection du fichier CSV ")
 
     uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
@@ -37,11 +34,11 @@ elif not st.session_state.data_uploaded:
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
         st.session_state.df = df
-        st.session_state.data_uploaded = True
+        st.session_state.page = 'rapport'
         st.success("Fichier chargé avec succès !")
 
 # -------- Page 3 : Rapport --------
-else:
+elif st.session_state.page == 'rapport':
     st.title("📊 Rapport de Veille Médiatique ")
 
     df = st.session_state.df
@@ -162,5 +159,3 @@ else:
     ax3.set_ylabel("Auteur / Source")
     ax3.set_title("Répartition des sentiments par auteur")
     st.pyplot(fig3)
-
-    

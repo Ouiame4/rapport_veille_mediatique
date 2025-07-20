@@ -10,23 +10,18 @@ def check_login(username, password):
 # -------- Initialisation de l'état --------
 if 'page' not in st.session_state:
     st.session_state.page = 'login'
-if 'login_clicked' not in st.session_state:
-    st.session_state.login_clicked = False
-if 'csv_uploaded' not in st.session_state:
-    st.session_state.csv_uploaded = False
 
 # -------- Page 1 : Login --------
 if st.session_state.page == 'login':
     st.title("🔐 Interface de connexion")
 
-    username = st.text_input("Nom d'utilisateur", key="username")
-    password = st.text_input("Mot de passe", type="password", key="password")
+    username = st.text_input("Nom d'utilisateur")
+    password = st.text_input("Mot de passe", type="password")
 
-    if st.button("Se connecter") and not st.session_state.login_clicked:
+    if st.button("Se connecter"):
         if check_login(username, password):
             st.session_state.page = 'upload'
-            st.session_state.login_clicked = True
-            st.experimental_rerun()   # Recharger immédiatement pour passer à la page suivante
+            st.success("Connexion réussie !")
         else:
             st.error("Identifiants incorrects. Veuillez réessayer.")
 
@@ -36,12 +31,11 @@ elif st.session_state.page == 'upload':
 
     uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
 
-    if uploaded_file is not None and not st.session_state.csv_uploaded:
+    if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
         st.session_state.df = df
         st.session_state.page = 'rapport'
-        st.session_state.csv_uploaded = True
-        st.experimental_rerun()
+        st.success("Fichier chargé avec succès !")
 
 # -------- Page 3 : Rapport --------
 elif st.session_state.page == 'rapport':

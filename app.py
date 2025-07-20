@@ -40,7 +40,7 @@ elif not st.session_state.data_uploaded:
         st.session_state.data_uploaded = True
         st.success("Fichier chargé avec succès !")
 
-# -------- Page 3 : Dashboard et génération du rapport --------
+# -------- Page 3 : Rapport --------
 else:
     st.title("📊 Rapport de Veille Médiatique ")
 
@@ -163,43 +163,4 @@ else:
     ax3.set_title("Répartition des sentiments par auteur")
     st.pyplot(fig3)
 
-    # -------- Génération du rapport HTML --------
-    if st.button("📥 Générer le rapport HTML"):
-
-        os.makedirs("rapport", exist_ok=True)
-
-        fig1.savefig("rapport/mentions.png")
-        fig2.savefig("rapport/sentiments.png")
-        fig3.savefig("rapport/top_authors.png")
-
-        html_content = f"""
-        <html>
-        <head><title>Rapport de Veille Médiatique</title></head>
-        <body>
-        <h1>Rapport de Veille Médiatique</h1>
-
-        <h2>KPIs</h2>
-        
-            <b>Mentions totales :</b> {total_mentions}
-            <b>Mentions positives :</b> {positive}
-            <b>Mentions négatives :</b> {negative}
-            <b>Mentions neutres :</b> {neutral}
-        
-
-        <h2>Évolution des Mentions</h2>
-        <img src="mentions.png" width="800">
-
-        <h2>Répartition des Sentiments</h2>
-        <img src="sentiments.png" width="800">
-
-        <h2>Top Auteurs et Sentiments</h2>
-        <img src="top_authors.png" width="800">
-
-        </body>
-        </html>
-        """
-
-        with open("rapport/rapport.html", "w", encoding="utf-8") as f:
-            f.write(html_content)
-
-        st.success("Rapport généré dans le dossier 'rapport' avec succès !")
+    

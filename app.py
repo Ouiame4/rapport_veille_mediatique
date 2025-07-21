@@ -8,10 +8,10 @@ st.set_page_config(page_title="Rapport Veille Médiatique", layout="wide")
 # -------- Upload CSV --------
 uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
 
-st.title("📊 Rapport d'Analyse de Veille Médiatique")
 
 # -------- Rapport --------
 if uploaded_file is not None:
+    st.title("📊 Rapport d'Analyse de Veille Médiatique")
     df = pd.read_csv(uploaded_file)
 
     df['articleCreatedDate'] = pd.to_datetime(df['articleCreatedDate'], errors='coerce')

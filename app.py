@@ -49,7 +49,7 @@ if uploaded_file is not None:
     ]
 
     # ---------- KPIs ----------
-    st.header("📊 Indicateurs Clés (KPIs)")
+    st.header("Indicateurs Clés (KPIs)")
 
     positive = df_filtered[df_filtered['sentimentHumanReadable'] == 'positive'].shape[0]
     negative = df_filtered[df_filtered['sentimentHumanReadable'] == 'negative'].shape[0]
@@ -63,7 +63,7 @@ if uploaded_file is not None:
     col4.metric("Neutres", neutral)
 
     # ---------- Granularité ----------
-    st.subheader("📈 Évolution des mentions")
+    st.subheader("Évolution des mentions")
 
     granularity = st.selectbox(
         "Granularité d'analyse du volume de mentions :",
@@ -88,7 +88,7 @@ if uploaded_file is not None:
     st.pyplot(fig1)
 
     # ---------- Répartition des sentiments ----------
-    st.subheader("📊 Répartition globale des sentiments")
+    st.subheader("Répartition globale des sentiments")
 
     sentiment_counts_raw = df_filtered['sentimentHumanReadable'].value_counts()
 
@@ -107,7 +107,7 @@ if uploaded_file is not None:
     st.pyplot(fig2)
 
     # ---------- Répartition des sentiments pour les top auteurs ----------
-    st.subheader("📊 Répartition des sentiments pour les top auteurs")
+    st.subheader("Répartition des sentiments pour les top auteurs")
 
     author_sentiment = df_filtered.groupby(['authorName', 'sentimentHumanReadable']).size().unstack(fill_value=0)
     author_sentiment['Total'] = author_sentiment.sum(axis=1)

@@ -133,7 +133,7 @@ if uploaded_file is not None:
     st.pyplot(fig3)
     
     # ---------- Tableau des top sources / auteurs ----------
-    st.subheader("📋 Tableau des Top Auteurs / Sources (par nombre de mentions)")
+    st.subheader("Tableau des Top Auteurs / Sources (par nombre de mentions)")
 
     top_authors_table = (
         df_filtered['authorName']

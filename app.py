@@ -131,3 +131,15 @@ if uploaded_file is not None:
     ax3.set_ylabel("Auteur / Source")
     ax3.set_title("Répartition des sentiments par auteur")
     st.pyplot(fig3)
+    
+    # ---------- Tableau des top sources / auteurs ----------
+    st.subheader("📋 Tableau des Top Auteurs / Sources (par nombre de mentions)")
+
+    top_authors_table = (
+        df_filtered['authorName']
+        .value_counts()
+        .reset_index()
+        .rename(columns={'index': 'Auteur / Source', 'authorName': 'Nombre de mentions'})
+    )
+
+    st.dataframe(top_authors_table.head(10), use_container_width=True)

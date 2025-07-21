@@ -3,45 +3,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# -------- Fonction de vérification du login --------
-def check_login(username, password):
-    return username == "admin" and password == "admin"
+st.set_page_config(page_title="Dashboard Veille Médiatique", layout="wide")
 
-# -------- Initialisation de l'état --------
-if 'page' not in st.session_state:
-    st.session_state.page = 'login'
+st.title("📁 Upload de Fichier CSV pour Analyse de Veille Médiatique")
 
-# -------- Page 1 : Login --------
-if st.session_state.page == 'login':
-    st.title("🔐 Interface de connexion")
+# -------- Upload CSV --------
+uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
 
-    username = st.text_input("Nom d'utilisateur")
-    password = st.text_input("Mot de passe", type="password")
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    st.success("Fichier chargé avec succès !")
 
-    if st.button("Se connecter"):
-        if check_login(username, password):
-            st.session_state.page = 'upload'
-            st.success("Connexion réussie !")
-        else:
-            st.error("Identifiants incorrects. Veuillez réessayer.")
-
-# -------- Page 2 : Upload CSV --------
-elif st.session_state.page == 'upload':
-    st.title("📁 Sélection du fichier CSV ")
-
-    uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
-
-    if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file)
-        st.session_state.df = df
-        st.session_state.page = 'rapport'
-        st.success("Fichier chargé avec succès !")
-
-# -------- Page 3 : Rapport --------
-elif st.session_state.page == 'rapport':
-    st.title("📊 Rapport de Veille Médiatique ")
-
-    df = st.session_state.df
     df['articleCreatedDate'] = pd.to_datetime(df['articleCreatedDate'], errors='coerce')
     df['sentimentHumanReadable'] = df['sentimentHumanReadable'].astype(str).str.strip().str.lower()
 
@@ -77,7 +49,7 @@ elif st.session_state.page == 'rapport':
     ]
 
     # ---------- KPIs ----------
-    st.header("Indicateurs Clés (KPIs)")
+    st.header("📊 Indicateurs Clés (KPIs)")
 
     positive = df_filtered[df_filtered['sentimentHumanReadable'] == 'positive'].shape[0]
     negative = df_filtered[df_filtered['sentimentHumanReadable'] == 'negative'].shape[0]
@@ -91,7 +63,7 @@ elif st.session_state.page == 'rapport':
     col4.metric("Neutres", neutral)
 
     # ---------- Granularité ----------
-    st.subheader("Choisissez la granularité temporelle")
+    st.subheader("📈 Évolution des mentions")
 
     granularity = st.selectbox(
         "Granularité d'analyse du volume de mentions :",
@@ -116,7 +88,7 @@ elif st.session_state.page == 'rapport':
     st.pyplot(fig1)
 
     # ---------- Répartition des sentiments ----------
-    st.subheader("Répartition globale des sentiments")
+    st.subheader("📊 Répartition globale des sentiments")
 
     sentiment_counts_raw = df_filtered['sentimentHumanReadable'].value_counts()
 
@@ -135,7 +107,7 @@ elif st.session_state.page == 'rapport':
     st.pyplot(fig2)
 
     # ---------- Répartition des sentiments pour les top auteurs ----------
-    st.subheader("Répartition des sentiments pour les top auteurs")
+    st.subheader("📊 Répartition des sentiments pour les top auteurs")
 
     author_sentiment = df_filtered.groupby(['authorName', 'sentimentHumanReadable']).size().unstack(fill_value=0)
     author_sentiment['Total'] = author_sentiment.sum(axis=1)

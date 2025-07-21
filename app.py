@@ -14,7 +14,6 @@ uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
 if uploaded_file is not None:
     st.title("📊 Rapport d'Analyse de Veille Médiatique")
     df = pd.read_csv(uploaded_file)
-    st.success("Fichier chargé avec succès !")
 
     df['articleCreatedDate'] = pd.to_datetime(df['articleCreatedDate'], errors='coerce')
     df['sentimentHumanReadable'] = df['sentimentHumanReadable'].astype(str).str.strip().str.lower()

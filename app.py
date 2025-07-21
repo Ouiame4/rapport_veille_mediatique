@@ -8,10 +8,11 @@ st.set_page_config(page_title="Dashboard Veille Médiatique", layout="wide")
 # -------- Upload CSV --------
 uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
 
-st.title("📊 Rapport d'Analyse de Veille Médiatique")
+#st.title("📊 Rapport d'Analyse de Veille Médiatique")
 
 # -------- Rapport --------
 if uploaded_file is not None:
+    st.title("📊 Rapport d'Analyse de Veille Médiatique")
     df = pd.read_csv(uploaded_file)
     st.success("Fichier chargé avec succès !")
 
@@ -50,7 +51,7 @@ if uploaded_file is not None:
     ]
 
     # ---------- KPIs ----------
-    st.header("📊 Indicateurs Clés (KPIs)")
+    st.header("Indicateurs Clés (KPIs)")
 
     positive = df_filtered[df_filtered['sentimentHumanReadable'] == 'positive'].shape[0]
     negative = df_filtered[df_filtered['sentimentHumanReadable'] == 'negative'].shape[0]

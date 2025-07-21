@@ -5,11 +5,16 @@ import seaborn as sns
 
 st.set_page_config(page_title="Dashboard Veille Médiatique", layout="wide")
 
-st.title("📁 Upload de Fichier CSV pour Analyse de Veille Médiatique")
-
 # -------- Upload CSV --------
 uploaded_file = st.file_uploader("Téléversez votre fichier CSV", type=["csv"])
 
+# -------- Titre dynamique --------
+if uploaded_file is None:
+    st.title("📁 Upload de Fichier CSV pour Analyse de Veille Médiatique")
+else:
+    st.title("📊 Rapport d'Analyse de Veille Médiatique")
+
+# -------- Rapport --------
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     st.success("Fichier chargé avec succès !")
